@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>
+  <!-- fbc_host_name -->
+  <category label="30010">
+    <setting id="fbcHostName" type="text" label="30000" default="fritz.box" />
+  </category>
+</settings>
