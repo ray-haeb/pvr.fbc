@@ -10,6 +10,10 @@ PVRFbcData::PVRFbcData( std::string const &fbcHostName ):fbcHostName( fbcHostNam
     LoadM3uData();
 }
 
+PVRFbcData::~PVRFbcData()
+{
+}
+
 std::string PVRFbcData::GetFileContents(std::string const &url)
 {
   std::string strContent;
