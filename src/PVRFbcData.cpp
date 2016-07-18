@@ -37,9 +37,9 @@ bool PVRFbcData::LoadM3uData()
     m_channels.clear();
     m_groups.clear();
     std::string const urlPrefix = "http://" + fbcHostName + "/dvb/m3u/";
-    std::string const hdtv_url = urlPrefix + "hdtv.m3u";
+    std::string const hdtv_url = urlPrefix + "tvhd.m3u";
     XBMC->Log(LOG_DEBUG, "%s - hdtv_url: %s", __FUNCTION__, hdtv_url.c_str() );
-    std::string const sdtv_url = urlPrefix + "sdtv.m3u";
+    std::string const sdtv_url = urlPrefix + "tvsd.m3u";
     XBMC->Log(LOG_DEBUG, "%s - sdtv_url: %s", __FUNCTION__, sdtv_url.c_str() );
     std::string const radio_url = urlPrefix + "radio.m3u";
     XBMC->Log(LOG_DEBUG, "%s - radio_url: %s", __FUNCTION__, radio_url.c_str() );
@@ -77,7 +77,7 @@ bool PVRFbcData::LoadM3uData()
 
 std::vector<PVRFbcChannel> PVRFbcData::ParseM3u(std::string const &input)
 {
-    XBMC->Log(LOG_DEBUG, "%s - ParseM3u", __FUNCTION__);
+    XBMC->Log(LOG_DEBUG, "%s - ParseM3u begin", __FUNCTION__);
     std::vector<PVRFbcChannel> ret;
     std::regex rx( "#EXTINF:-1,(.*)\\n.*\\n(rtsp://.*)" );
     std::sregex_iterator i( input.begin(), input.end(), rx );
@@ -88,11 +88,12 @@ std::vector<PVRFbcChannel> PVRFbcData::ParseM3u(std::string const &input)
         {
             std::string name = (*i)[1].str();
             std::string url = (*i)[2].str();
-            XBMC->Log(LOG_DEBUG, "%s - ParseM3u: %s - %s", __FUNCTION__, name.c_str(), url.c_str());
+            XBMC->Log(LOG_DEBUG, "%s - ParseM3u: \"%s\" - \"%s\"", __FUNCTION__, name.c_str(), url.c_str());
             ret.emplace_back( url, name );
         }
         ++i;
     }
+    XBMC->Log(LOG_DEBUG, "%s - ParseM3u end", __FUNCTION__);
     return ret;
 }
 
