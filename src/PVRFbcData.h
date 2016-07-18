@@ -6,7 +6,7 @@
 class PVRFbcData
 {
 public:
-  PVRFbcData( std::string const &fbcHostName );
+  PVRFbcData( std::string const &fbcHostName = "fritz.box" );
   virtual ~PVRFbcData(void);
 
   virtual int GetChannelsAmount(void);
