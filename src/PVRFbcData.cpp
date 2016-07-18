@@ -5,6 +5,9 @@
 #include <regex>
 #include <iterator>
 
+using namespace ADDON;
+
+
 PVRFbcData::PVRFbcData( std::string const &fbcHostName ):fbcHostName( fbcHostName )
 {
     LoadM3uData();
@@ -34,9 +37,15 @@ bool PVRFbcData::LoadM3uData()
     m_channels.clear();
     m_groups.clear();
     std::string const urlPrefix = "http://" + fbcHostName + "/dvb/m3u/";
-    std::vector<PVRFbcChannel> hd = ParseM3u( GetFileContents( urlPrefix + "hdtv.m3u" ) );
-    std::vector<PVRFbcChannel> sd = ParseM3u( GetFileContents( urlPrefix + "sdtv.m3u" ) );
-    std::vector<PVRFbcChannel> radio = ParseM3u( GetFileContents( urlPrefix + "radio.m3u" ) );
+    std::string const hdtv_url = urlPrefix + "hdtv.m3u";
+    XBMC->Log(LOG_DEBUG, "%s - hdtv_url: %s", __FUNCTION__, hdtv_url.c_str() );
+    std::string const sdtv_url = urlPrefix + "sdtv.m3u";
+    XBMC->Log(LOG_DEBUG, "%s - sdtv_url: %s", __FUNCTION__, sdtv_url.c_str() );
+    std::string const radio_url = urlPrefix + "radio.m3u";
+    XBMC->Log(LOG_DEBUG, "%s - radio_url: %s", __FUNCTION__, radio_url.c_str() );
+    std::vector<PVRFbcChannel> hd = ParseM3u( GetFileContents( hdtv_url ) );
+    std::vector<PVRFbcChannel> sd = ParseM3u( GetFileContents( sdtv_url ) );
+    std::vector<PVRFbcChannel> radio = ParseM3u( GetFileContents( radio_url ) );
     std::uint32_t id = 0;
     for( auto &i : hd ) { i.type = PVRFbcChannelType::hd; i.id = id++; }
     for( auto &i : sd ) { i.type = PVRFbcChannelType::sd; i.id = id++; }
@@ -68,6 +77,7 @@ bool PVRFbcData::LoadM3uData()
 
 std::vector<PVRFbcChannel> PVRFbcData::ParseM3u(std::string const &input)
 {
+    XBMC->Log(LOG_DEBUG, "%s - ParseM3u", __FUNCTION__);
     std::vector<PVRFbcChannel> ret;
     std::regex rx( "#EXTINF:-1,(.*)\\n.*\\n(rtsp://.*)" );
     std::sregex_iterator i( input.begin(), input.end(), rx );
@@ -76,7 +86,10 @@ std::vector<PVRFbcChannel> PVRFbcData::ParseM3u(std::string const &input)
     {
         if( i->size() == 3 )
         {
-            ret.emplace_back( (*i)[2].str(), (*i)[1].str() );
+            std::string name = (*i)[1].str();
+            std::string url = (*i)[2].str();
+            XBMC->Log(LOG_DEBUG, "%s - ParseM3u: %s - %s", __FUNCTION__, name.c_str(), url.c_str());
+            ret.emplace_back( url, name );
         }
         ++i;
     }
