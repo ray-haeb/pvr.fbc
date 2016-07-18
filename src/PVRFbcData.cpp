@@ -20,7 +20,7 @@ PVRFbcData::~PVRFbcData()
 std::string PVRFbcData::GetFileContents(std::string const &url)
 {
   std::string strContent;
-  void* fileHandle = XBMC->OpenFile(url.c_str(), 0);
+  void* fileHandle = XBMC->OpenFile(url.c_str(), XFILE::READ_NO_CACHE);
   if (fileHandle)
   {
     char buffer[1024];
@@ -85,6 +85,7 @@ std::vector<PVRFbcChannel> PVRFbcData::ParseM3u(std::string const &input)
     std::sregex_iterator e;
     while( i != e )
     {
+        XBMC->Log(LOG_DEBUG, "%s - ParseM3u: loop", __FUNCTION__);
         if( i->size() == 3 )
         {
             std::string name = (*i)[1].str();
