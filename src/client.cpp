@@ -21,7 +21,8 @@
 
 #include "client.h"
 #include "xbmc_pvr_dll.h"
-#include "PVRDemoData.h"
+#include "PVRFbcData.h"
+#include "PVRFbcChannel.h"
 #include <p8-platform/util/util.h>
 
 using namespace std;
@@ -33,9 +34,9 @@ using namespace ADDON;
 
 bool           m_bCreated       = false;
 ADDON_STATUS   m_CurStatus      = ADDON_STATUS_UNKNOWN;
-PVRDemoData   *m_data           = NULL;
+PVRFbcData   *m_data           = NULL;
 bool           m_bIsPlaying     = false;
-PVRDemoChannel m_currentChannel;
+PVRFbcChannel m_currentChannel;
 
 /* User adjustable settings are saved here.
  * Default values are defined inside client.h
@@ -43,6 +44,8 @@ PVRDemoChannel m_currentChannel;
  */
 std::string g_strUserPath             = "";
 std::string g_strClientPath           = "";
+std::string g_fbcHostName             = "";
+
 
 CHelper_libXBMC_addon *XBMC           = NULL;
 CHelper_libXBMC_pvr   *PVR            = NULL;
@@ -51,7 +54,14 @@ extern "C" {
 
 void ADDON_ReadSettings(void)
 {
-  //STUB
+    char buffer[1024];
+    if(!XBMC->GetSetting("fbcHostName", &buffer))
+    {
+        g_fbcHostName = "fritz.box";
+    }else
+    {
+        g_fbcHostName = buffer;
+    }
 }
 
 ADDON_STATUS ADDON_Create(void* hdl, void* props)
@@ -76,7 +86,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
 
-  XBMC->Log(LOG_DEBUG, "%s - Creating the PVR demo add-on", __FUNCTION__);
+  XBMC->Log(LOG_DEBUG, "%s - Creating the PVR Fritz!Box Cable Client add-on", __FUNCTION__);
 
   m_CurStatus     = ADDON_STATUS_UNKNOWN;
   g_strUserPath   = pvrprops->strUserPath;
@@ -84,7 +94,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
 
   ADDON_ReadSettings();
 
-  m_data = new PVRDemoData;
+  m_data = new PVRFbcData( g_fbcHostName );
   m_CurStatus = ADDON_STATUS_OK;
   m_bCreated = true;
   return m_CurStatus;
@@ -114,7 +124,7 @@ unsigned int ADDON_GetSettings(ADDON_StructSetting ***sSet)
 
 ADDON_STATUS ADDON_SetSetting(const char *settingName, const void *settingValue)
 {
-  return ADDON_STATUS_OK;
+  return ADDON_STATUS_NEED_RESTART;
 }
 
 void ADDON_Stop()
@@ -188,13 +198,13 @@ const char *GetBackendName(void)
 
 const char *GetBackendVersion(void)
 {
-  static CStdString strBackendVersion = "0.0.1";
+  static std::string strBackendVersion = "0.0.1";
   return strBackendVersion.c_str();
 }
 
 const char *GetConnectionString(void)
 {
-  static CStdString strConnectionString = "connected";
+  static std::string strConnectionString = "connected";
   return strConnectionString.c_str();
 }
 
@@ -296,9 +306,6 @@ PVR_ERROR SignalStatus(PVR_SIGNAL_STATUS &signalStatus)
 
 int GetRecordingsAmount(bool deleted)
 {
-  if (m_data)
-    return m_data->GetRecordingsAmount(deleted);
-
   return -1;
 }
 
