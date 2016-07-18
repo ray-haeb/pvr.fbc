@@ -80,6 +80,7 @@ std::vector<PVRFbcChannel> PVRFbcData::ParseM3u(std::string const &input)
         }
         ++i;
     }
+    return ret;
 }
 
 
