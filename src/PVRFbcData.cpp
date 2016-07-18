@@ -81,7 +81,7 @@ std::vector<PVRFbcChannel> PVRFbcData::ParseM3u(std::string const &input)
     XBMC->Log(LOG_DEBUG, "%s - ParseM3u size: %i", __FUNCTION__, input.size() );
     XBMC->Log(LOG_DEBUG, input.c_str() );
     std::vector<PVRFbcChannel> ret;
-    std::regex rx( "#EXTINF:-1,(.*)[\\n|\\r]+.*[\\n|\\r]+(rtsp://.*)" );
+    std::regex rx( "#EXTINF:-?\\d+,(.*)[\\n|\\r]+.*[\\n|\\r]+(rtsp://.*)" );
     std::sregex_iterator i( input.begin(), input.end(), rx );
     std::sregex_iterator e;
     while( i != e )
