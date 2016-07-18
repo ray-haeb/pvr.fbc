@@ -83,6 +83,18 @@ std::vector<PVRFbcChannel> PVRFbcData::ParseM3u(std::string const &input)
     return ret;
 }
 
+bool PVRFbcData::GetChannel(const PVR_CHANNEL &channel, PVRFbcChannel &myChannel)
+{
+    for( auto const &c : m_channels )
+    {
+        if( c.id == channel.iUniqueId )
+        {
+            myChannel = c;
+            return true;
+        }
+    }
+    return false;
+}
 
 int PVRFbcData::GetChannelsAmount(void)
 {
