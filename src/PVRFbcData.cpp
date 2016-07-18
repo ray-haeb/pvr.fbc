@@ -167,6 +167,7 @@ PVR_ERROR PVRFbcData::GetChannelGroupMembers(ADDON_HANDLE handle, const PVR_CHAN
             }
         }
     }
+    return PVR_ERROR_NO_ERROR;
 }
 
 
