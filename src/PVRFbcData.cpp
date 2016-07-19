@@ -55,19 +55,13 @@ bool PVRFbcData::LoadM3uData()
 {
     m_channels.clear();
     m_groups.clear();
-    std::string const urlPrefix = "http://" + fbcHostName + "/dvb/m3u/";
-    std::string const hdtv_url = urlPrefix + "tvhd.m3u";
-    XBMC->Log(LOG_DEBUG, "%s - hdtv_url: %s", __FUNCTION__, hdtv_url.c_str() );
-    std::string const sdtv_url = urlPrefix + "tvsd.m3u";
-    XBMC->Log(LOG_DEBUG, "%s - sdtv_url: %s", __FUNCTION__, sdtv_url.c_str() );
-    std::string const radio_url = urlPrefix + "radio.m3u";
-    XBMC->Log(LOG_DEBUG, "%s - radio_url: %s", __FUNCTION__, radio_url.c_str() );
-    std::vector<PVRFbcChannel> hd = ParseM3u( GetFileContents( hdtv_url ) );
-    std::vector<PVRFbcChannel> sd = ParseM3u( GetFileContents( sdtv_url ) );
-    std::vector<PVRFbcChannel> radio = ParseM3u( GetFileContents( radio_url ) );
     std::uint32_t id = 0;
+    std::string const urlPrefix = "http://" + fbcHostName + "/dvb/m3u/";
+    std::vector<PVRFbcChannel> hd = ParseM3u( GetFileContents( urlPrefix + "tvhd.m3u" ) );
     for( auto &i : hd ) { i.type = PVRFbcChannelType::hd; i.id = id++; }
+    std::vector<PVRFbcChannel> sd = ParseM3u( GetFileContents( urlPrefix + "tvsd.m3u" ) );
     for( auto &i : sd ) { i.type = PVRFbcChannelType::sd; i.id = id++; }
+    std::vector<PVRFbcChannel> radio = ParseM3u( GetFileContents( urlPrefix + "radio.m3u" ) );
     for( auto &i : radio ) { i.type = PVRFbcChannelType::radio; i.id = id++; }
     m_channels.reserve( hd.size() + sd.size() + radio.size() );
     std::move( hd.begin(), hd.end(), std::back_inserter( m_channels ) );

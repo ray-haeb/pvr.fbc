@@ -23,3 +23,17 @@ msgctxt "#30010"
 msgid "General"
 msgstr "Allgemein"
 
+msgctxt "#30001"
+msgid "M3uRegexp"
+msgstr "Regexp zum Parsen der .m3u Datei"
+
+msgctxt "#30002"
+msgid "M3uRegexpName"
+msgstr "Position des Sendernamens im Ergebnis der Regexp"
+
+msgctxt "#30003"
+msgid "M3uRegexpUrl"
+msgstr "Position der Stream-Url im Ergebnis der Regexp"
+
+
+

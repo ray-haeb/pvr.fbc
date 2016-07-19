@@ -43,6 +43,7 @@ PVRFbcChannel m_currentChannel;
 std::string g_strUserPath             = "";
 std::string g_strClientPath           = "";
 std::string g_fbcHostName             = "";
+std::string g_fbcfbcM3uRegex          = "";
 
 
 CHelper_libXBMC_addon *XBMC           = NULL;
@@ -53,9 +54,18 @@ extern "C" {
 void ADDON_ReadSettings(void)
 {
     char buffer[1024];
+    memset(&buffer, 0, 1024);
     if(!XBMC->GetSetting("fbcHostName", &buffer))
     {
         g_fbcHostName = "fritz.box";
+    }else
+    {
+        g_fbcHostName = buffer;
+    }
+    memset(&buffer, 0, 1024);
+    if(!XBMC->GetSetting("fbcM3uRegex", &buffer))
+    {
+        g_fbcHostName = "#EXTINF:-?\\d+,(.*)\\n(?:#EXT.*\\n)*(rtsp://.*)";
     }else
     {
         g_fbcHostName = buffer;
