@@ -27,7 +27,7 @@
 using namespace ADDON;
 
 
-PVRFbcData::PVRFbcData( std::string const &fbcHostName ):fbcHostName( fbcHostName )
+PVRFbcData::PVRFbcData()
 {
     LoadM3uData();
 }
@@ -56,7 +56,7 @@ bool PVRFbcData::LoadM3uData()
     m_channels.clear();
     m_groups.clear();
     std::uint32_t id = 0;
-    std::string const urlPrefix = "http://" + fbcHostName + "/dvb/m3u/";
+    std::string const urlPrefix = "http://" + g_fbcHostName + "/dvb/m3u/";
     std::vector<PVRFbcChannel> hd = ParseM3u( GetFileContents( urlPrefix + "tvhd.m3u" ) );
     for( auto &i : hd ) { i.type = PVRFbcChannelType::hd; i.id = id++; }
     std::vector<PVRFbcChannel> sd = ParseM3u( GetFileContents( urlPrefix + "tvsd.m3u" ) );
@@ -94,16 +94,16 @@ std::vector<PVRFbcChannel> PVRFbcData::ParseM3u(std::string const &input)
     XBMC->Log(LOG_DEBUG, "%s - ParseM3u size: %i", __FUNCTION__, input.size() );
 //    XBMC->Log(LOG_DEBUG, input.c_str() );
     std::vector<PVRFbcChannel> ret;
-    std::regex rx( "#EXTINF:-?\\d+,(.*)\\n(?:#EXT.*\\n)*(rtsp://.*)" );
+    std::regex rx( g_fbcM3uRegex );
     std::sregex_iterator i( input.begin(), input.end(), rx );
     std::sregex_iterator e;
     while( i != e )
     {
         XBMC->Log(LOG_DEBUG, "%s - ParseM3u: loop", __FUNCTION__);
-        if( i->size() == 3 )
+        if( i->size() > std::max( g_fbcM3uRegexNamePos, g_fbcM3uRegexUrlPos ) )
         {
-            std::string name = (*i)[1].str();
-            std::string url = (*i)[2].str();
+            std::string name = (*i)[g_fbcM3uRegexNamePos].str();
+            std::string url = (*i)[g_fbcM3uRegexUrlPos].str();
             ret.emplace_back( url, name );
         }
         ++i;

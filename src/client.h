@@ -22,7 +22,9 @@
 #include "libXBMC_pvr.h"
 
 extern bool                          m_bCreated;
-extern std::string                   g_strUserPath;
-extern std::string                   g_strClientPath;
+extern std::string                   g_fbcHostName;
+extern std::string                   g_fbcM3uRegex;
+extern int                           g_fbcM3uRegexNamePos;
+extern int                           g_fbcM3uRegexUrlPos;
 extern ADDON::CHelper_libXBMC_addon *XBMC;
 extern CHelper_libXBMC_pvr          *PVR;

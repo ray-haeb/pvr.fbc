@@ -25,7 +25,7 @@
 class PVRFbcData
 {
 public:
-  PVRFbcData( std::string const &fbcHostName = "fritz.box" );
+  PVRFbcData();
   virtual ~PVRFbcData(void);
 
   virtual int GetChannelsAmount(void);
@@ -41,7 +41,6 @@ protected:
   virtual bool LoadM3uData(void);
   virtual std::vector<PVRFbcChannel> ParseM3u( std::string const &input );
 private:
-  std::string fbcHostName;
   std::vector<PVRFbcChannelGroup> m_groups;
   std::vector<PVRFbcChannel>      m_channels;
 };

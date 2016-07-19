@@ -32,43 +32,59 @@ using namespace ADDON;
 
 bool           m_bCreated       = false;
 ADDON_STATUS   m_CurStatus      = ADDON_STATUS_UNKNOWN;
-PVRFbcData   *m_data           = NULL;
+PVRFbcData   * m_data           = NULL;
 bool           m_bIsPlaying     = false;
-PVRFbcChannel m_currentChannel;
+PVRFbcChannel  m_currentChannel;
 
 /* User adjustable settings are saved here.
- * Default values are defined inside client.h
- * and exported to the other source files.
  */
-std::string g_strUserPath             = "";
-std::string g_strClientPath           = "";
-std::string g_fbcHostName             = "";
-std::string g_fbcfbcM3uRegex          = "";
-
+std::string g_fbcHostName              = "fritz.box";
+std::string g_fbcM3uRegex              = "#EXTINF:-?\\d+,(.*)\\n(?:#EXT.*\\n)*(rtsp://.*)";
+int g_fbcM3uRegexNamePos               = 1;
+int g_fbcM3uRegexUrlPos                = 2;
 
 CHelper_libXBMC_addon *XBMC           = NULL;
 CHelper_libXBMC_pvr   *PVR            = NULL;
+
+std::string ReadSettingsString( char const *name, std::string const &alternative = "" )
+{
+    char buffer[1024];
+    memset(&buffer, 0, 1024);
+    if(!XBMC->GetSetting(name, &buffer))
+    {
+        return std::string( buffer );
+    }else
+    {
+        return std::string( alternative );
+    }
+}
+
+int ReadSettingsInt( char const *name, int alternative = 0 )
+{
+    int ret = alternative;
+    if(!XBMC->GetSetting(name, &ret))
+        return ret;
+    else
+        return alternative;
+}
 
 extern "C" {
 
 void ADDON_ReadSettings(void)
 {
-    char buffer[1024];
-    memset(&buffer, 0, 1024);
-    if(!XBMC->GetSetting("fbcHostName", &buffer))
+    g_fbcHostName = ReadSettingsString( "fbcHostName", g_fbcHostName );
+    g_fbcM3uRegex = ReadSettingsString( "fbcM3uRegex", g_fbcM3uRegex );
+    g_fbcM3uRegexNamePos = ReadSettingsInt( "fbcM3uRegexNamePos", g_fbcM3uRegexNamePos );
+    if( g_fbcM3uRegexNamePos < 0 )
     {
-        g_fbcHostName = "fritz.box";
-    }else
-    {
-        g_fbcHostName = buffer;
+        XBMC->Log(LOG_ERROR, "g_fbcM3uRegexNamePos should be >= 0, but is %i", g_fbcM3uRegexNamePos );
+        g_fbcM3uRegexNamePos = 0;
     }
-    memset(&buffer, 0, 1024);
-    if(!XBMC->GetSetting("fbcM3uRegex", &buffer))
+    g_fbcM3uRegexUrlPos = ReadSettingsInt( "fbcM3uRegexUrlPos", g_fbcM3uRegexUrlPos );
+    if( g_fbcM3uRegexUrlPos < 0 )
     {
-        g_fbcHostName = "#EXTINF:-?\\d+,(.*)\\n(?:#EXT.*\\n)*(rtsp://.*)";
-    }else
-    {
-        g_fbcHostName = buffer;
+        XBMC->Log(LOG_ERROR, "g_fbcM3uRegexUrlPos should be >= 0, but is %i", g_fbcM3uRegexUrlPos );
+        g_fbcM3uRegexUrlPos = 0;
     }
 }
 
@@ -97,12 +113,10 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
   XBMC->Log(LOG_DEBUG, "%s - Creating the PVR Fritz!Box Cable Client add-on", __FUNCTION__);
 
   m_CurStatus     = ADDON_STATUS_UNKNOWN;
-  g_strUserPath   = pvrprops->strUserPath;
-  g_strClientPath = pvrprops->strClientPath;
 
   ADDON_ReadSettings();
 
-  m_data = new PVRFbcData( g_fbcHostName );
+  m_data = new PVRFbcData();
   m_CurStatus = ADDON_STATUS_OK;
   m_bCreated = true;
   return m_CurStatus;
@@ -206,7 +220,7 @@ const char *GetBackendName(void)
 
 const char *GetBackendVersion(void)
 {
-  static std::string strBackendVersion = "0.0.1";
+  static std::string strBackendVersion = "unknown";
   return strBackendVersion.c_str();
 }
 
@@ -218,7 +232,7 @@ const char *GetConnectionString(void)
 
 const char *GetBackendHostname(void)
 {
-  return "";
+  return g_fbcHostName.c_str();
 }
 
 PVR_ERROR GetDriveSpace(long long *iTotal, long long *iUsed)

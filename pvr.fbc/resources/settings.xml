@@ -5,7 +5,7 @@
   </category>
   <category label="30020">
     <setting id="fbcM3uRegex" type="text" label="30001" default="#EXTINF:-?\d+,(.*)\n(?:#EXT.*\n)*(rtsp://.*)" />
-    <setting id="fbcM3uRegexName" type="number" label="30002" default="1" />
-    <setting id="fbcM3uRegexUrl" type="number" label="30003" default="2" />
+    <setting id="fbcM3uRegexNamePos" type="number" label="30002" default="1" />
+    <setting id="fbcM3uRegexUrlPos" type="number" label="30003" default="2" />
   </category>
 </settings>
