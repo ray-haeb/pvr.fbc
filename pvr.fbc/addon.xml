@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon
   id="pvr.fbc"
-  version="0.0.2"
+  version="0.0.3"
   name="PVR Fritz!Box Cable Client">
   <requires>
     <c-pluff version="0.1"/>
@@ -9,7 +9,7 @@
   </requires>
   <extension
     point="xbmc.pvrclient"
-    library_linux="pvr.fbc.so.0.0.2"/>
+    library_linux="pvr.fbc.so.0.0.3"/>
   <extension point="xbmc.addon.metadata">
     <summary lang="de_DE">PVR Client für die Fritz!Box Cable</summary>
     <description lang="de_DE">PVR Client für die Fritz!Box Cable</description>
