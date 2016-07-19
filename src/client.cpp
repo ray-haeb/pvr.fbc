@@ -200,7 +200,7 @@ PVR_ERROR GetAddonCapabilities(PVR_ADDON_CAPABILITIES* pCapabilities)
 
 const char *GetBackendName(void)
 {
-  static const char *strBackendName = "Fritz!Box Cable pvr add-on";
+  static const char *strBackendName = "Fritz!Box Cable";
   return strBackendName;
 }
 
@@ -306,7 +306,7 @@ PVR_ERROR GetChannelGroupMembers(ADDON_HANDLE handle, const PVR_CHANNEL_GROUP &g
 
 PVR_ERROR SignalStatus(PVR_SIGNAL_STATUS &signalStatus)
 {
-  snprintf(signalStatus.strAdapterName, sizeof(signalStatus.strAdapterName), "Fritz!Box Cable pvr");
+  snprintf(signalStatus.strAdapterName, sizeof(signalStatus.strAdapterName), "Fritz!Box Cable");
   snprintf(signalStatus.strAdapterStatus, sizeof(signalStatus.strAdapterStatus), "OK");
 
   return PVR_ERROR_NO_ERROR;
