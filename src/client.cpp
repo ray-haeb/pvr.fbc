@@ -50,7 +50,7 @@ std::string ReadSettingsString( char const *name, std::string const &alternative
 {
     char buffer[1024];
     memset(&buffer, 0, 1024);
-    if(!XBMC->GetSetting(name, &buffer))
+    if(XBMC->GetSetting(name, &buffer))
     {
         std::string ret( buffer );
         XBMC->Log(LOG_DEBUG, "ReadSettingsString \"%s\": \"%s\"", name, ret.c_str() );
@@ -65,7 +65,7 @@ std::string ReadSettingsString( char const *name, std::string const &alternative
 int ReadSettingsInt( char const *name )
 {
     int ret = 0;
-    if(!XBMC->GetSetting(name, &ret))
+    if(XBMC->GetSetting(name, &ret))
     {
         return ret;
     }else
