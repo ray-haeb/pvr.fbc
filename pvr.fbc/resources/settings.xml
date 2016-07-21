@@ -4,8 +4,9 @@
     <setting id="fbcHostName" type="text" label="30000" default="fritz.box" />
   </category>
   <category label="30020">
-    <setting id="fbcM3uRegex" type="text" label="30001" default="#EXTINF:-?\d+,(.*)\n(?:#EXT.*\n)*(rtsp://.*)" />
-    <setting id="fbcM3uRegexNamePos" type="number" label="30002" default="1" />
-    <setting id="fbcM3uRegexUrlPos" type="number" label="30003" default="2" />
+    <setting it="fbcM3uEnableSettings" type="bool" label="30001" default="false" />
+    <setting id="fbcM3uRegex" type="text" label="30002" enable="eq(-1,true)" default="#EXTINF:-?\d+,(.*)\n(?:#EXT.*\n)*(rtsp://.*)" />
+    <setting id="fbcM3uRegexNamePos" type="number" label="30003" enable="eq(-2,true)" default="1" />
+    <setting id="fbcM3uRegexUrlPos" type="number" label="30004" enable="eq(-3,true)" default="2" />
   </category>
 </settings>
