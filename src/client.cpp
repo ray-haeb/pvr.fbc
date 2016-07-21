@@ -104,7 +104,6 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
   PVR_PROPERTIES* pvrprops = (PVR_PROPERTIES*)props;
 
   XBMC = new CHelper_libXBMC_addon;
-  XBMC->Log(LOG_DEBUG, "%s - Creating the PVR Fritz!Box Cable Client add-on (step one)", __FUNCTION__);
   if (!XBMC->RegisterMe(hdl))
   {
     SAFE_DELETE(XBMC);
@@ -119,7 +118,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
 
-  XBMC->Log(LOG_DEBUG, "%s - Creating the PVR Fritz!Box Cable Client add-on (step two)", __FUNCTION__);
+  XBMC->Log(LOG_DEBUG, "%s - Creating the PVR Fritz!Box Cable Client add-on", __FUNCTION__);
 
   m_CurStatus     = ADDON_STATUS_UNKNOWN;
 
