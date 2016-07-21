@@ -1,0 +1,47 @@
+# Kodi Media Center language file
+# Addon Name: PVR Fritz!Box Cable Client
+# Addon id: pvr.fbc
+msgid ""
+msgstr ""
+"Project-Id-Version: KODI Main\n"
+"Report-Msgid-Bugs-To: http://trac.kodi.tv/\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: nonen"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_EN\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#30000"
+msgid "HostName"
+msgstr "host name of the Fritz!Box"
+
+msgctxt "#30010"
+msgid "General"
+msgstr "general"
+
+msgctxt "#30020"
+msgid "Expert"
+msgstr "expert"
+
+msgctxt "#30001"
+msgid "M3uRegexpEnableSettings"
+msgstr "expert settings"
+
+msgctxt "#30002"
+msgid "M3uRegexp"
+msgstr "regexp used to parse the .m3u file"
+
+msgctxt "#30003"
+msgid "M3uRegexpNamePos"
+msgstr "position of the channel's name in the regexexp's result"
+
+msgctxt "#30004"
+msgid "M3uRegexpUrlPos"
+msgstr "position of the channel's url in the regexexp's result"
+
+
+

@@ -140,6 +140,7 @@ ADDON_STATUS ADDON_GetStatus()
 void ADDON_Destroy()
 {
   delete m_data;
+  m_data = nullptr;
   m_bCreated = false;
   m_CurStatus = ADDON_STATUS_UNKNOWN;
 }
