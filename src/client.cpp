@@ -84,6 +84,7 @@ void ADDON_ReadSettings(void)
 
 ADDON_STATUS ADDON_Create(void* hdl, void* props)
 {
+    XBMC->Log(LOG_DEBUG, "%s - Creating the PVR Fritz!Box Cable Client add-on (step one)", __FUNCTION__);
   if (!hdl || !props)
     return ADDON_STATUS_UNKNOWN;
 
@@ -104,7 +105,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
     return ADDON_STATUS_PERMANENT_FAILURE;
   }
 
-  XBMC->Log(LOG_DEBUG, "%s - Creating the PVR Fritz!Box Cable Client add-on", __FUNCTION__);
+  XBMC->Log(LOG_DEBUG, "%s - Creating the PVR Fritz!Box Cable Client add-on (step two)", __FUNCTION__);
 
   m_CurStatus     = ADDON_STATUS_UNKNOWN;
 
@@ -113,6 +114,7 @@ ADDON_STATUS ADDON_Create(void* hdl, void* props)
   m_data = new PVRFbcData();
   m_CurStatus = ADDON_STATUS_OK;
   m_bCreated = true;
+  XBMC->Log(LOG_DEBUG, "%s - Creating the PVR Fritz!Box Cable Client add-on (done)", __FUNCTION__);
   return m_CurStatus;
 }
 
