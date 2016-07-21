@@ -62,19 +62,33 @@ std::string ReadSettingsString( char const *name, std::string const &alternative
     }
 }
 
+int ReadSettingsInt( char const *name )
+{
+    int ret = 0;
+    if(!XBMC->GetSetting(name, &ret))
+    {
+        return ret;
+    }else
+    {
+        XBMC->Log(LOG_ERROR, "ReadSettingsInt \"%s\" failed", name );
+        return -1;
+    }
+}
+
 extern "C" {
 
 void ADDON_ReadSettings(void)
 {
     g_fbcHostName = ReadSettingsString( "fbcHostName" );
     g_fbcM3uRegex = ReadSettingsString( "fbcM3uRegex" );
-    g_fbcM3uRegexNamePos = std::stoi( ReadSettingsString( "fbcM3uRegexNamePos" ) );
+    g_fbcM3uRegexNamePos = ReadSettingsInt( "fbcM3uRegexNamePos" );
+    g_fbcM3uRegexUrlPos  = ReadSettingsInt( "fbcM3uRegexUrlPos" );
+
     if( g_fbcM3uRegexNamePos < 0 )
     {
         XBMC->Log(LOG_ERROR, "g_fbcM3uRegexNamePos should be >= 0, but is %i", g_fbcM3uRegexNamePos );
         g_fbcM3uRegexNamePos = 0;
     }
-    g_fbcM3uRegexUrlPos = std::stoi( ReadSettingsString( "fbcM3uRegexUrlPos" ) );
     if( g_fbcM3uRegexUrlPos < 0 )
     {
         XBMC->Log(LOG_ERROR, "g_fbcM3uRegexUrlPos should be >= 0, but is %i", g_fbcM3uRegexUrlPos );
