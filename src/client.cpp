@@ -52,9 +52,12 @@ std::string ReadSettingsString( char const *name, std::string const &alternative
     memset(&buffer, 0, 1024);
     if(!XBMC->GetSetting(name, &buffer))
     {
-        return std::string( buffer );
+        std::string ret( buffer );
+        XBMC->Log(LOG_DEBUG, "ReadSettingsString \"%s\": \"%s\"", name, ret.c_str() );
+        return ret;
     }else
     {
+        XBMC->Log(LOG_ERROR, "ReadSettingsString \"%s\" failed", name );
         return std::string( alternative );
     }
 }
